@@ -43,7 +43,7 @@ public class Hangman {
                     printHangManPicture(wrongCount, word);
                     System.out.println("Incorrect! Try again. \nYou made " + wrongCount + " wrong guesses.\n");
                 }
-                if (wrongCount >= 7) {
+                if (wrongCount >= 6) {
                     System.out.println("You loose! The word to find is " + word);
                     break;
                 }
@@ -56,7 +56,9 @@ public class Hangman {
                     System.out.println("You win!");
                     break;
                 } else {
-                    System.out.println("Nope! Try again.\n");
+                    wrongCount ++;
+                    printHangManPicture(wrongCount, word);
+                    System.out.println("Nope! Try again.\nYou made " + wrongCount + " wrong guesses.\n");
                 }
             }
             System.out.println("Do you want to play again? (y/n): ");
