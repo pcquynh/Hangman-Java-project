@@ -40,7 +40,7 @@ public class Hangman {
                 }
                 if (!getPlayerGuess(sc, word, playerGuesses)) {
                     wrongCount++;
-                    hangManPicture(wrongCount, word);
+                    printHangManPicture(wrongCount, word);
                     System.out.println("Incorrect! Try again. \nYou made " + wrongCount + " wrong guesses.\n");
                 }
                 if (wrongCount >= 7) {
@@ -65,9 +65,9 @@ public class Hangman {
     }
 
     /**
-     *
+     * Choose word's level: easy, medium, hard
      * @param choice
-     * @return
+     * @return the String of words
      */
     public static String[] getChoice(String choice){
         switch (choice){
@@ -81,9 +81,9 @@ public class Hangman {
     }
 
     /**
-     *
+     * Get randomly a String word in String words
      * @param words
-     * @return
+     * @return a String word
      */
     public static String getWord(String[] words){
         String word = words[(int) (Math.random() * words.length)];
@@ -91,11 +91,11 @@ public class Hangman {
     }
 
     /**
-     *
+     * Check if the guessed letter is contained in word
      * @param sc
      * @param word
      * @param playerGuesses
-     * @return
+     * @return boolean True or False
      */
     public static boolean getPlayerGuess(Scanner sc,String word, List<Character> playerGuesses){
         System.out.println("Please enter a letter");
@@ -105,7 +105,7 @@ public class Hangman {
     }
 
     /**
-     *
+     * Print the word's state, the * is replaced with the right guessed letter
      * @param word
      * @param playerGuesses
      */
@@ -123,7 +123,7 @@ public class Hangman {
     }
 
     /**
-     *
+     * Print the list of wrong guessed character
      * @param word
      * @param playerGuesses
      */
@@ -140,10 +140,10 @@ public class Hangman {
     }
 
     /**
-     *
+     * Check if correct count is equal length of word
      * @param word
      * @param playerGuesses
-     * @return
+     * @return boolean true or false
      */
     public static boolean isWinner(String word, List<Character> playerGuesses ){
         int correctCount = 0;
@@ -156,11 +156,11 @@ public class Hangman {
     }
 
     /**
-     *
+     * Print the hangman picture following the wrong count
      * @param wrongCount
      * @param word
      */
-    public static void hangManPicture(int wrongCount, String word){
+    public static void printHangManPicture(int wrongCount, String word){
         if (wrongCount == 1) {
             System.out.println("   _________");
             System.out.println("   |      _|_");
@@ -226,7 +226,7 @@ public class Hangman {
     }
 
     /**
-     * 
+     * set timer for the game
      */
     public static void timer(){
         final Runnable runnable = new Runnable() {
