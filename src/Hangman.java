@@ -21,7 +21,10 @@ public class Hangman {
     private static final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
     public static void main(String[] args) {
-        System.out.println("Let's play Hangman Game\n");
+        System.out.println("THE HANGMAN GAME");
+        System.out.println("You have 60 Seconds to guess the right answer!");
+        System.out.println("You may guess a single letter or the entire word!");
+        System.out.println();
         Scanner sc = new Scanner(System.in);
         String continueInput = "y";
         do {
@@ -35,30 +38,35 @@ public class Hangman {
             int wrongCount = 0;
             while (true) {
                 printWordState(word, playerGuesses);
-                if(playerGuesses.size() > 0) {
-                getPlayerWrongGuesses(word, playerGuesses);
+                if (playerGuesses.size() > 0) {
+                    getPlayerWrongGuesses(word, playerGuesses);
                 }
                 if (!getPlayerGuess(sc, word, playerGuesses)) {
                     wrongCount++;
                     printHangManPicture(wrongCount, word);
                     System.out.println("Incorrect! Try again. \nYou made " + wrongCount + " wrong guesses.\n");
                 }
-                if (wrongCount >= 6) {
+                if (wrongCount > 6) {
                     System.out.println("You loose! The word to find is " + word);
+                    scheduler.shutdown();
                     break;
                 }
                 if (isWinner(word, playerGuesses)) {
                     System.out.println("You win!");
+                    scheduler.shutdown();
                     break;
                 }
-                System.out.println("Please enter your guess for the word: ");
-                if (sc.nextLine().equals(word)) {
-                    System.out.println("You win!");
-                    break;
-                } else {
-                    wrongCount ++;
-                    printHangManPicture(wrongCount, word);
-                    System.out.println("Nope! Try again.\nYou made " + wrongCount + " wrong guesses.\n");
+                if (isCorrectLetter(word, playerGuesses)) {
+                    System.out.println("Please enter your guess for the whole word: ");
+                    if (sc.nextLine().equals(word)) {
+                        System.out.println("You win!");
+                        scheduler.shutdown();
+                        break;
+                    } else {
+                        wrongCount++;
+                        printHangManPicture(wrongCount, word);
+                        System.out.println("Nope! Try again.\nYou made " + wrongCount + " wrong guesses.\n");
+                    }
                 }
             }
             System.out.println("Do you want to play again? (y/n): ");
@@ -157,6 +165,15 @@ public class Hangman {
         return (word.length() == correctCount);
     }
 
+    public static boolean isCorrectLetter(String word, List<Character> playerGuesses ) {
+        for (int i = 0; i < word.length(); i++) {
+            if (playerGuesses.contains(word.charAt(i))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * Print the hangman picture following the wrong count
      * @param wrongCount
@@ -232,7 +249,7 @@ public class Hangman {
      */
     public static void timer(){
         final Runnable runnable = new Runnable() {
-            int countdownStarter = 100; //100 seconds
+            int countdownStarter = 60; //60 seconds
             public void run() {
                 //System.out.println(countdownStarter);
                 countdownStarter--;
